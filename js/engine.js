@@ -45,6 +45,7 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
+
         update(dt);
         render();
 
@@ -91,6 +92,7 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+        gameControl.update(dt);
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -136,7 +138,6 @@ var Engine = (function(global) {
             }
         }
 
-
         renderEntities();
     }
 
@@ -160,7 +161,11 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        // Reset currentFrame
+        gameControl = new GameControl();
+        allEnemies = [];
+        player.x = 400;
+        player.y = 430;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -181,4 +186,5 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.reset = reset;
 })(this);
