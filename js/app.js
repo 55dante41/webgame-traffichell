@@ -30,10 +30,11 @@ ControlObject.prototype.update = function(dt) {
 //==============================================================================
 // Enemy Class (is a subclass of GameObject)
 // Constructor
-var Enemy = function(x, y, sprite, id) {
+var Enemy = function(x, y, speed, sprite, id) {
   //Call the superclass constructor
   GameObject.call(this);
   this.id = id;
+  this.speed = speed;
 
   //Perform required/specific overrides
   this.x = x;
@@ -50,7 +51,7 @@ Enemy.prototype.update = function(dt) {
   //Updates the enemy position with time. If the enemy goes off-screen
   //it gets auto-deleted
   //Params: dt = time difference between ticks
-    this.x += 100*dt;
+    this.x += 100*this.speed*dt;
     if(this.y == player.y && (player.x - this.x) < 60 && (player.x - this.x) > -60) {
       reset();
     }
@@ -131,20 +132,38 @@ var GameControl = function() {
 GameControl.prototype = Object.create(ControlObject.prototype);
 GameControl.prototype.constructor = GameControl;
 
-GameControl.prototype.spawnEnemies = function() {
-  var enemyBugPositionX =0;
-  var enemyBugPositionY = 300;
-  if(Math.random() > 0.5) {
-    enemyBugPositionY = 385;
+GameControl.prototype.spawnEnemies = function(enemyId) {
+  var enemyPositionX;
+  var enemyPositionY;
+  var spawnDistribution = Math.random();
+  if(enemyId == 0) {
+    //Enemy is a bug. Bug occupies only grass tiles
+    enemyPositionX = 0;
+    enemyPositionY = 300;
+    if(spawnDistribution > 0.5) {
+      enemyBugPositionY = 385;
+    }
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, 1, enemyBugSprite, this.latestEnemyIndex);
+  } else if(enemyId == 1) {
+    //Enemy is a blue car. Car occupies only stone tiles
+    enemyPositionX = 0;
+    enemyPositionY = 45;
+    if(spawnDistribution <= 0.33) {
+      enemyPositionY = 215;
+    } else if(spawnDistribution <= 0.66) {
+      enemyPositionY = 130;
+    }
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, 1.5, enemyBlueCarSprite, this.latestEnemyIndex);
   }
-  var enemy = new Enemy(enemyBugPositionX, enemyBugPositionY, enemyBugSprite, this.latestEnemyIndex);
+
   allEnemies.push(enemy);
   this.latestEnemyIndex++;
 }
 GameControl.prototype.update = function(dt) {
   this.currentFrame++;
-  if(this.currentFrame % 120 == 0) {
-    this.spawnEnemies();
+  if(this.currentFrame % 75 == 0) {
+      this.spawnEnemies(0);
+      this.spawnEnemies(1);    
   }
 }
 
@@ -161,6 +180,7 @@ var allEnemies = [];
 
 // Sprites
 var enemyBugSprite = 'images/enemy-bug.png';
+var enemyBlueCarSprite = 'images/enemy-bluecar.svg';
 var playerSprite = 'images/char-boy.png';
 
 var player = new Player(400,430,playerSprite);
