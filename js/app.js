@@ -18,14 +18,61 @@ GameObject.prototype.update = function() {
 //==============================================================================
 // Base Class for Game Controls (frame-reading, enemy-spawning, collectible-spawning etc.)
 // Constructor
-var ControlObject = function() {
-  // Empty constructor
+var GameControl = function() {
+  this.currentFrame = 0;
+  this.latestEnemyIndex = 0;
 }
 
-// Prototypal methods
-ControlObject.prototype.update = function(dt) {
-  // Default fallback method. Called every dt time interval tick.
-  // Does nothing for now
+GameControl.prototype.spawnEnemies = function(enemyId) {
+  var spawnDistribution = Math.random();
+  if(enemyId == 0) {
+    //Enemy is a bug. Bug occupies only grass tiles
+    var enemyPositionX = -100;
+    var enemyPositionY = 300;
+    var enemySpeed = 3;
+    var enemySprite = 'images/enemy-bug.png';
+    if(spawnDistribution > 0.5) {
+      enemyPositionY = 385;
+    }
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, this.latestEnemyIndex);
+  } else if(enemyId == 1) {
+    //Enemy is a blue car. Car occupies only stone tiles
+    var enemyPositionX = -100;
+    var enemyPositionY = 45;
+    var enemySpeed = 4;
+    var enemySprite = 'images/enemy-bluecar.svg';
+    if(spawnDistribution < 0.33) {
+      enemyPositionY = 215;
+    } else if(spawnDistribution < 0.66) {
+      enemyPositionX = 500;
+      enemyPositionY = 130;
+      enemySpeed = -4;
+      enemySprite = 'images/enemy-bluecar-left.svg';
+    }
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, this.latestEnemyIndex);
+  }
+
+  allEnemies.push(enemy);
+  this.latestEnemyIndex++;
+}
+GameControl.prototype.spawnCollectibles = function(collectibleId) {
+  var spawnDistribution = Math.random();
+  if(collectibleId == 0) {
+    //
+  } else if(collectibleId == 1) {
+
+  } else if(collectibleId == 2) {
+
+  }
+}
+GameControl.prototype.update = function(dt) {
+  this.currentFrame++;
+  if(this.currentFrame % 30 == 0) {
+    this.spawnEnemies(1);
+  }
+  if(this.currentFrame % 40 == 0) {
+    this.spawnEnemies(0);
+  }
 }
 //==============================================================================
 // Enemy Class (is a subclass of GameObject)
@@ -56,7 +103,7 @@ Enemy.prototype.update = function(dt) {
       reset();
     }
     if(this.x > 600 || this.x < -200) {
-      allEnemies.splice(allEnemies.indexOf(this), 1);      
+      allEnemies.splice(allEnemies.indexOf(this), 1);
     }
   };
 //==============================================================================
@@ -119,58 +166,7 @@ Player.prototype.handleInput= function(direction) {
     }
   }
 //==============================================================================
-// Game Control
-var GameControl = function() {
-  // Call superclass constructor
-  ControlObject.call(this);
-
-  this.currentFrame = 0;
-  this.latestEnemyIndex = 0;
-}
-
-GameControl.prototype = Object.create(ControlObject.prototype);
-GameControl.prototype.constructor = GameControl;
-
-GameControl.prototype.spawnEnemies = function(enemyId) {
-  var spawnDistribution = Math.random();
-  if(enemyId == 0) {
-    //Enemy is a bug. Bug occupies only grass tiles
-    var enemyPositionX = -100;
-    var enemyPositionY = 300;
-    if(spawnDistribution > 0.5) {
-      enemyPositionY = 385;
-    }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, 1, enemyBugSprite, this.latestEnemyIndex);
-  } else if(enemyId == 1) {
-    //Enemy is a blue car. Car occupies only stone tiles
-    var enemyPositionX = -100;
-    var enemyPositionY = 45;
-    if(spawnDistribution < 0.33) {
-      enemyPositionY = 215;
-    } else if(spawnDistribution < 0.66) {
-      enemyPositionY = 130;
-    }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, 2, enemyBlueCarSprite, this.latestEnemyIndex);
-  }
-
-  allEnemies.push(enemy);
-  this.latestEnemyIndex++;
-}
-GameControl.prototype.update = function(dt) {
-  this.currentFrame++;
-  if(this.currentFrame % 60 == 0) {
-    this.spawnEnemies(1);
-  }
-  if(this.currentFrame % 120 == 0) {
-    this.spawnEnemies(0);
-  }
-}
-
-
-
-//==============================================================================
 // Game logic
-
 var gameControl = new GameControl();
 
 // allEnemies stores all visible Enemy objects. Enemies that go off the screen
@@ -179,7 +175,8 @@ var allEnemies = [];
 
 // Sprites
 var enemyBugSprite = 'images/enemy-bug.png';
-var enemyBlueCarSprite = 'images/enemy-bluecar.svg';
+var enemyBlueCarRightSprite = 'images/enemy-bluecar.svg';
+var enemyBlueCarLeftSprite = 'images/enemy-bluecar-left.svg';
 var playerSprite = 'images/char-boy.png';
 
 var player = new Player(400,430,playerSprite);
