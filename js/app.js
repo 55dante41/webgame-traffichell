@@ -55,9 +55,8 @@ Enemy.prototype.update = function(dt) {
     if(this.y == player.y && (player.x - this.x) < 60 && (player.x - this.x) > -60) {
       reset();
     }
-    if(this.x > 500 || this.x < -100) {
-      //allEnemies.pop(this);
-      allEnemies.splice(this.index, 1);
+    if(this.x > 600 || this.x < -200) {
+      allEnemies.splice(allEnemies.indexOf(this), 1);      
     }
   };
 //==============================================================================
@@ -133,27 +132,25 @@ GameControl.prototype = Object.create(ControlObject.prototype);
 GameControl.prototype.constructor = GameControl;
 
 GameControl.prototype.spawnEnemies = function(enemyId) {
-  var enemyPositionX;
-  var enemyPositionY;
   var spawnDistribution = Math.random();
   if(enemyId == 0) {
     //Enemy is a bug. Bug occupies only grass tiles
-    enemyPositionX = 0;
-    enemyPositionY = 300;
+    var enemyPositionX = -100;
+    var enemyPositionY = 300;
     if(spawnDistribution > 0.5) {
-      enemyBugPositionY = 385;
+      enemyPositionY = 385;
     }
     var enemy = new Enemy(enemyPositionX, enemyPositionY, 1, enemyBugSprite, this.latestEnemyIndex);
   } else if(enemyId == 1) {
     //Enemy is a blue car. Car occupies only stone tiles
-    enemyPositionX = 0;
-    enemyPositionY = 45;
-    if(spawnDistribution <= 0.33) {
+    var enemyPositionX = -100;
+    var enemyPositionY = 45;
+    if(spawnDistribution < 0.33) {
       enemyPositionY = 215;
-    } else if(spawnDistribution <= 0.66) {
+    } else if(spawnDistribution < 0.66) {
       enemyPositionY = 130;
     }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, 1.5, enemyBlueCarSprite, this.latestEnemyIndex);
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, 2, enemyBlueCarSprite, this.latestEnemyIndex);
   }
 
   allEnemies.push(enemy);
@@ -161,9 +158,11 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
 }
 GameControl.prototype.update = function(dt) {
   this.currentFrame++;
-  if(this.currentFrame % 75 == 0) {
-      this.spawnEnemies(0);
-      this.spawnEnemies(1);    
+  if(this.currentFrame % 60 == 0) {
+    this.spawnEnemies(1);
+  }
+  if(this.currentFrame % 120 == 0) {
+    this.spawnEnemies(0);
   }
 }
 
