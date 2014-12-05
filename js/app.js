@@ -28,11 +28,14 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
   if(enemyId == 0) {
     //Enemy is a bug. Bug occupies only grass tiles
     var enemyPositionX = -100;
-    var enemyPositionY = 300;
+    var enemyPositionY = 385;
     var enemySpeed = 3;
     var enemySprite = 'images/enemy-bug.png';
-    if(spawnDistribution > 0.5) {
-      enemyPositionY = 385;
+    if(spawnDistribution < 0.5) {
+      enemyPositionX = 500;
+      enemyPositionY = 300;
+      enemySpeed = -3;
+      enemySprite = 'images/enemy-bug-left.png';
     }
     var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, this.latestEnemyIndex);
   } else if(enemyId == 1) {
@@ -174,7 +177,8 @@ var gameControl = new GameControl();
 var allEnemies = [];
 
 // Sprites
-var enemyBugSprite = 'images/enemy-bug.png';
+var enemyBugRightSprite = 'images/enemy-bug.png';
+var enemyBugLeftSprite = 'images/enemy-bug-left.png';
 var enemyBlueCarRightSprite = 'images/enemy-bluecar.svg';
 var enemyBlueCarLeftSprite = 'images/enemy-bluecar-left.svg';
 var playerSprite = 'images/char-boy.png';
