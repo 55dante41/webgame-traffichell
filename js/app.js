@@ -111,7 +111,30 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 1);
     allCollectibles.push(collectible);
   } else if(collectibleId == 2) {
-
+    // Orange Gem
+    var collectiblePositionX = 0;
+    var collectiblePositionY = 385;
+    var collectibleSprite = 'images/collectible-orangeGem.png'
+    if(spawnDistributionX < 0.2) {
+      collectiblePositionX = 400;
+    } else if(spawnDistributionX < 0.4) {
+      collectiblePositionX = 100;
+    } else if(spawnDistributionX < 0.6) {
+      collectiblePositionX = 200;
+    } else if(spawnDistributionX < 0.8) {
+      collectiblePositionX = 300;
+    }
+    if(spawnDistributionY < 0.2) {
+      collectiblePositionY = 45;
+    } else if(spawnDistributionY < 0.4) {
+      collectiblePositionY = 215;
+    } else if(spawnDistributionY < 0.6) {
+      collectiblePositionY = 130;
+    } else if(spawnDistributionY < 0.8) {
+      collectiblePositionY = 300;
+    }
+    var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 2);
+    allCollectibles.push(collectible);
   }
 }
 GameControl.prototype.increaseScore = function(increaseBy) {

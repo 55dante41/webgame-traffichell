@@ -197,7 +197,8 @@ var Engine = (function(global) {
         'images/enemy-bluecar-left.svg',
         'images/char-boy.png',
         'images/collectible-blueGem.png',
-        'images/collectible-greenGem.png'
+        'images/collectible-greenGem.png',
+        'images/collectible-orangeGem.png'
     ]);
     Resources.onReady(init);
 
