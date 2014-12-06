@@ -140,7 +140,9 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
+        ctx.font = '48px serif';
+        ctx.direction = 'rtl';
+        ctx.fillText(String(gameControl.currentScore), 475, 110);
         renderEntities();
     }
 

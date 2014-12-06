@@ -21,6 +21,7 @@ GameObject.prototype.update = function() {
 var GameControl = function() {
   this.currentFrame = 0;
   this.latestEnemyIndex = 0;
+  this.currentScore = 0;
 }
 
 GameControl.prototype.spawnEnemies = function(enemyId) {
@@ -92,6 +93,12 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
 
   }
 }
+GameControl.prototype.updateScore = function() {
+  this.currentScore++;
+  ctx.font = '48px serif';
+  ctx.direction = 'rtl';
+  ctx.fillText(String(this.currentScore), 475, 110);
+}
 GameControl.prototype.update = function(dt) {
   if(this.currentFrame % 30 == 0) {
     this.spawnEnemies(1);
@@ -100,8 +107,7 @@ GameControl.prototype.update = function(dt) {
     this.spawnEnemies(0);
   }
   if(this.currentFrame % 180 == 0) {
-    if(allCollectibles[0]!=undefined) {
-      allCollectibles[0].clear();
+    while(allCollectibles[0] != undefined) {
       allCollectibles[0].clear();
     }
     this.spawnCollectibles(0);
@@ -214,6 +220,7 @@ Collectible.prototype.constructor = Collectible;
 
 Collectible.prototype.update = function(dt) {
   if(this.y == player.y && this.x == player.x) {
+    gameControl.updateScore();
     this.clear();
   }
 }
