@@ -96,6 +96,9 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+        allCollectibles.forEach(function(collectible) {
+          collectible.update(dt);
+        });
         player.update();
     }
 
@@ -150,8 +153,11 @@ var Engine = (function(global) {
          * the render function you have defined.
          */
         allEnemies.forEach(function(enemy) {
-            enemy.render();
+          enemy.render();
         });
+        allCollectibles.forEach(function(collectible) {
+          collectible.render();
+        })
 
         player.render();
     }
@@ -180,7 +186,8 @@ var Engine = (function(global) {
         'images/enemy-bug-left.png',
         'images/enemy-bluecar.svg',
         'images/enemy-bluecar-left.svg',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/collectible-blueGem.png'
     ]);
     Resources.onReady(init);
 

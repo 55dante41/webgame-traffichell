@@ -59,9 +59,33 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
   this.latestEnemyIndex++;
 }
 GameControl.prototype.spawnCollectibles = function(collectibleId) {
-  var spawnDistribution = Math.random();
+  var spawnDistributionX = Math.random();
+  var spawnDistributionY = Math.random();
   if(collectibleId == 0) {
-    //
+    // Blue Gem
+    var collectiblePositionX = 0;
+    var collectiblePositionY = 385;
+    var collectibleSprite = 'images/collectible-blueGem.png'
+    if(spawnDistributionX < 0.2) {
+      collectiblePositionX = 101;
+    } else if(spawnDistributionX < 0.4) {
+      collectiblePositionX = 202;
+    } else if(spawnDistributionX < 0.6) {
+      collectiblePositionX = 303;
+    } else if(spawnDistributionX < 0.8) {
+      collectiblePositionX = 404;
+    }
+    if(spawnDistributionY < 0.2) {
+      collectiblePositionY = 300;
+    } else if(spawnDistributionY < 0.4) {
+      collectiblePositionY = 215;
+    } else if(spawnDistributionY < 0.6) {
+      collectiblePositionY = 130;
+    } else if(spawnDistributionY < 0.8) {
+      collectiblePositionY = 45;
+    }
+    var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite);
+    allCollectibles.push(collectible);
   } else if(collectibleId == 1) {
 
   } else if(collectibleId == 2) {
@@ -69,13 +93,19 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
   }
 }
 GameControl.prototype.update = function(dt) {
-  this.currentFrame++;
   if(this.currentFrame % 30 == 0) {
     this.spawnEnemies(1);
   }
   if(this.currentFrame % 40 == 0) {
     this.spawnEnemies(0);
   }
+  if(this.currentFrame % 120 == 0) {
+    if(allCollectibles[0]!=undefined) {
+      allCollectibles[0].clear();
+    }
+    this.spawnCollectibles(0);
+  }
+  this.currentFrame++;
 }
 //==============================================================================
 // Enemy Class (is a subclass of GameObject)
@@ -169,12 +199,32 @@ Player.prototype.handleInput= function(direction) {
     }
   }
 //==============================================================================
+//
+var Collectible = function(x, y, sprite) {
+  GameObject.call(this);
+  this.x = x;
+  this.y = y;
+  this.sprite = sprite;
+}
+
+Collectible.prototype = Object.create(GameObject.prototype);
+Collectible.prototype.constructor = Collectible;
+
+Collectible.prototype.update = function(dt) {
+  if(this.y == player.y && this.x == player.x) {
+    this.clear();
+  }
+}
+Collectible.prototype.clear = function() {
+  allCollectibles.splice(allCollectibles.indexOf(this),1);
+}
+//==============================================================================
 // Game logic
 var gameControl = new GameControl();
 
 // allEnemies stores all visible Enemy objects. Enemies that go off the screen
 // are removed from the array to save memory
-var allEnemies = [];
+var allEnemies = [], allCollectibles = [];
 
 // Sprites
 var enemyBugRightSprite = 'images/enemy-bug.png';
