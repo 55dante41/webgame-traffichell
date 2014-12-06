@@ -37,7 +37,7 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
       enemySpeed = -3;
       enemySprite = 'images/enemy-bug-left.png';
     }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite);
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, 0);
   } else if(enemyId == 1) {
     //Enemy is a blue car. Car occupies only stone tiles
     var enemyPositionX = -100;
@@ -52,7 +52,7 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
       enemySpeed = -4;
       enemySprite = 'images/enemy-bluecar-left.svg';
     }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite);
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, 1);
   }
 
   allEnemies.push(enemy);
@@ -83,19 +83,39 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     } else if(spawnDistributionY < 0.8) {
       collectiblePositionY = 45;
     }
-    var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite);
+    var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 0);
     allCollectibles.push(collectible);
   } else if(collectibleId == 1) {
-
+    // Green Gem
+    var collectiblePositionX = 0;
+    var collectiblePositionY = 385;
+    var collectibleSprite = 'images/collectible-greenGem.png'
+    if(spawnDistributionX < 0.2) {
+      collectiblePositionX = 400;
+    } else if(spawnDistributionX < 0.4) {
+      collectiblePositionX = 300;
+    } else if(spawnDistributionX < 0.6) {
+      collectiblePositionX = 200;
+    } else if(spawnDistributionX < 0.8) {
+      collectiblePositionX = 100;
+    }
+    if(spawnDistributionY < 0.2) {
+      collectiblePositionY = 300;
+    } else if(spawnDistributionY < 0.4) {
+      collectiblePositionY = 215;
+    } else if(spawnDistributionY < 0.6) {
+      collectiblePositionY = 130;
+    } else if(spawnDistributionY < 0.8) {
+      collectiblePositionY = 45;
+    }
+    var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 1);
+    allCollectibles.push(collectible);
   } else if(collectibleId == 2) {
 
   }
 }
-GameControl.prototype.updateScore = function() {
-  this.currentScore++;
-  ctx.font = '48px serif';
-  ctx.direction = 'rtl';
-  ctx.fillText(String(this.currentScore), 475, 110);
+GameControl.prototype.increaseScore = function(increaseBy) {
+  this.currentScore+=increaseBy;
 }
 GameControl.prototype.update = function(dt) {
   if(this.currentFrame % 30 == 0) {
@@ -104,22 +124,25 @@ GameControl.prototype.update = function(dt) {
   if(this.currentFrame % 40 == 0) {
     this.spawnEnemies(0);
   }
-  if(this.currentFrame % 180 == 0) {
-    while(allCollectibles[0] != undefined) {
-      allCollectibles[0].clear();
-    }
+  if(this.currentFrame % 120 == 0) {
     this.spawnCollectibles(0);
-    this.spawnCollectibles(0);
+  }
+  if(this.currentFrame % 360 == 0) {
+    this.spawnCollectibles(1);
+  }
+  if(this.currentFrame % 600 == 0) {
+    this.spawnCollectibles(2);
   }
   this.currentFrame++;
 }
 //==============================================================================
 // Enemy Class (is a subclass of GameObject)
 // Constructor
-var Enemy = function(x, y, speed, sprite) {
+var Enemy = function(x, y, speed, sprite, id) {
   //Call the superclass constructor
   GameObject.call(this);
   this.speed = speed;
+  this.id = id;
 
   //Perform required/specific overrides
   this.x = x;
@@ -205,11 +228,13 @@ Player.prototype.handleInput= function(direction) {
   }
 //==============================================================================
 //
-var Collectible = function(x, y, sprite) {
+var Collectible = function(x, y, sprite, id) {
   GameObject.call(this);
   this.x = x;
   this.y = y;
   this.sprite = sprite;
+  this.id = id;
+  this.createdOnFrame = gameControl.currentFrame;
 }
 
 Collectible.prototype = Object.create(GameObject.prototype);
@@ -217,7 +242,16 @@ Collectible.prototype.constructor = Collectible;
 
 Collectible.prototype.update = function(dt) {
   if(this.y == player.y && this.x == player.x) {
-    gameControl.updateScore();
+    if(this.id == 0) {
+      gameControl.increaseScore(1);
+    } else if(this.id==1) {
+      gameControl.increaseScore(3);
+    } else if(this.id==2) {
+      gameControl.increaseScore(5);
+    }
+    this.clear();
+  }
+  if(gameControl.currentFrame - this.createdOnFrame >= 120) {
     this.clear();
   }
 }
@@ -239,7 +273,7 @@ var enemyBlueCarRightSprite = 'images/enemy-bluecar.svg';
 var enemyBlueCarLeftSprite = 'images/enemy-bluecar-left.svg';
 var playerSprite = 'images/char-boy.png';
 
-var player = new Player(400,430,playerSprite);
+var player = new Player(200,430,playerSprite);
 
 // Event listener which listens and filters the key presses
 // and sends the keys to the Player object's handleInput() method.

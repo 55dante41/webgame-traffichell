@@ -140,7 +140,7 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-        ctx.font = '48px serif';
+        ctx.font = '48px atari';
         ctx.direction = 'rtl';
         if(gameControl.currentScore < 10) {
           ctx.fillText('00'+ gameControl.currentScore, 425, 110);
@@ -178,7 +178,8 @@ var Engine = (function(global) {
         // Reset currentFrame
         gameControl = new GameControl();
         allEnemies = [];
-        player.x = 400;
+        allCollectibles = [];
+        player.x = 200;
         player.y = 430;
     }
 
@@ -195,7 +196,8 @@ var Engine = (function(global) {
         'images/enemy-bluecar.svg',
         'images/enemy-bluecar-left.svg',
         'images/char-boy.png',
-        'images/collectible-blueGem.png'
+        'images/collectible-blueGem.png',
+        'images/collectible-greenGem.png'
     ]);
     Resources.onReady(init);
 
