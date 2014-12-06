@@ -20,7 +20,6 @@ GameObject.prototype.update = function() {
 // Constructor
 var GameControl = function() {
   this.currentFrame = 0;
-  this.latestEnemyIndex = 0;
   this.currentScore = 0;
 }
 
@@ -38,7 +37,7 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
       enemySpeed = -3;
       enemySprite = 'images/enemy-bug-left.png';
     }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, this.latestEnemyIndex);
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite);
   } else if(enemyId == 1) {
     //Enemy is a blue car. Car occupies only stone tiles
     var enemyPositionX = -100;
@@ -53,11 +52,10 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
       enemySpeed = -4;
       enemySprite = 'images/enemy-bluecar-left.svg';
     }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, this.latestEnemyIndex);
+    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite);
   }
 
   allEnemies.push(enemy);
-  this.latestEnemyIndex++;
 }
 GameControl.prototype.spawnCollectibles = function(collectibleId) {
   var spawnDistributionX = Math.random();
@@ -118,10 +116,9 @@ GameControl.prototype.update = function(dt) {
 //==============================================================================
 // Enemy Class (is a subclass of GameObject)
 // Constructor
-var Enemy = function(x, y, speed, sprite, id) {
+var Enemy = function(x, y, speed, sprite) {
   //Call the superclass constructor
   GameObject.call(this);
-  this.id = id;
   this.speed = speed;
 
   //Perform required/specific overrides

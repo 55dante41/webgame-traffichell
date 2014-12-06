@@ -142,7 +142,13 @@ var Engine = (function(global) {
         }
         ctx.font = '48px serif';
         ctx.direction = 'rtl';
-        ctx.fillText(String(gameControl.currentScore), 475, 110);
+        if(gameControl.currentScore < 10) {
+          ctx.fillText('00'+ gameControl.currentScore, 425, 110);
+        } else if(gameControl.currentScore < 100) {
+          ctx.fillText('0'+ gameControl.currentScore, 425, 110);
+        } else {
+          ctx.fillText(String(gameControl.currentScore), 425, 110);
+        }
         renderEntities();
     }
 
