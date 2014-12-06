@@ -67,13 +67,13 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     var collectiblePositionY = 385;
     var collectibleSprite = 'images/collectible-blueGem.png'
     if(spawnDistributionX < 0.2) {
-      collectiblePositionX = 101;
+      collectiblePositionX = 100;
     } else if(spawnDistributionX < 0.4) {
-      collectiblePositionX = 202;
+      collectiblePositionX = 200;
     } else if(spawnDistributionX < 0.6) {
-      collectiblePositionX = 303;
+      collectiblePositionX = 300;
     } else if(spawnDistributionX < 0.8) {
-      collectiblePositionX = 404;
+      collectiblePositionX = 400;
     }
     if(spawnDistributionY < 0.2) {
       collectiblePositionY = 300;
@@ -99,10 +99,12 @@ GameControl.prototype.update = function(dt) {
   if(this.currentFrame % 40 == 0) {
     this.spawnEnemies(0);
   }
-  if(this.currentFrame % 120 == 0) {
+  if(this.currentFrame % 180 == 0) {
     if(allCollectibles[0]!=undefined) {
       allCollectibles[0].clear();
+      allCollectibles[0].clear();
     }
+    this.spawnCollectibles(0);
     this.spawnCollectibles(0);
   }
   this.currentFrame++;
