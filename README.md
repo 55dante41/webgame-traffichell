@@ -1,6 +1,5 @@
 #Traffic Hell
-###Arcade game built for Udacity Front-End developer Nano Degree
-================================================================================
+Arcade game built for Udacity Front-End developer ND
 
 ###The Directory structure:
 - css (directory to hold all stylesheets)
@@ -27,10 +26,10 @@ There is a safe zone on the bottom, where no traffic is present and no gems are
 spawned. This is the best spot to land if you need to rest ;P
 
 ####Controls:
-UP arrow moves the player up
-LEFT arrow moves the player left
-RIGHT arrow moves the player right
-DOWN arrow moves the player down
+- UP arrow moves the player up
+- LEFT arrow moves the player left
+- RIGHT arrow moves the player right
+- DOWN arrow moves the player down
 
 The game is hosted at "http://devmaestro.github.io/games/survive/index.html"
 for anyone to play.
