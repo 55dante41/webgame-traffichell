@@ -25,7 +25,7 @@ var GameControl = function() {
 
 GameControl.prototype.spawnEnemies = function(enemyId) {
   var spawnDistribution = Math.random();
-  if(enemyId == 0) {
+  if(enemyId === 0) {
     //Enemy is a bug. Bug occupies only grass tiles
     var enemyPositionX = -100;
     var enemyPositionY = 385;
@@ -38,7 +38,7 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
       enemySprite = 'images/enemy-bug-left.png';
     }
     var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, 0);
-  } else if(enemyId == 1) {
+  } else if(enemyId === 1) {
     //Enemy is a blue car. Car occupies only stone tiles
     var enemyPositionX = -100;
     var enemyPositionY = 45;
@@ -59,11 +59,11 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
 GameControl.prototype.spawnCollectibles = function(collectibleId) {
   var spawnDistributionX = Math.random();
   var spawnDistributionY = Math.random();
-  if(collectibleId == 0) {
+  if(collectibleId === 0) {
     // Blue Gem
     var collectiblePositionX = 0;
     var collectiblePositionY = 385;
-    var collectibleSprite = 'images/collectible-blueGem.png'
+    var collectibleSprite = 'images/collectible-blueGem.png';
     if(spawnDistributionX < 0.2) {
       collectiblePositionX = 100;
     } else if(spawnDistributionX < 0.4) {
@@ -84,11 +84,11 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     }
     var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 0);
     allCollectibles.push(collectible);
-  } else if(collectibleId == 1) {
+  } else if(collectibleId === 1) {
     // Green Gem
     var collectiblePositionX = 0;
     var collectiblePositionY = 385;
-    var collectibleSprite = 'images/collectible-greenGem.png'
+    var collectibleSprite = 'images/collectible-greenGem.png';
     if(spawnDistributionX < 0.2) {
       collectiblePositionX = 400;
     } else if(spawnDistributionX < 0.4) {
@@ -109,11 +109,11 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     }
     var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 1);
     allCollectibles.push(collectible);
-  } else if(collectibleId == 2) {
+  } else if(collectibleId === 2) {
     // Orange Gem
     var collectiblePositionX = 0;
     var collectiblePositionY = 385;
-    var collectibleSprite = 'images/collectible-orangeGem.png'
+    var collectibleSprite = 'images/collectible-orangeGem.png';
     if(spawnDistributionX < 0.2) {
       collectiblePositionX = 400;
     } else if(spawnDistributionX < 0.4) {
@@ -140,19 +140,19 @@ GameControl.prototype.increaseScore = function(increaseBy) {
   this.currentScore+=increaseBy;
 };
 GameControl.prototype.update = function(dt) {
-  if(this.currentFrame % 30 == 0) {
+  if(this.currentFrame % 30 === 0) {
     this.spawnEnemies(1);
   }
-  if(this.currentFrame % 40 == 0) {
+  if(this.currentFrame % 40 === 0) {
     this.spawnEnemies(0);
   }
-  if(this.currentFrame % 120 == 0) {
+  if(this.currentFrame % 120 === 0) {
     this.spawnCollectibles(0);
   }
-  if(this.currentFrame % 360 == 0) {
+  if(this.currentFrame % 360 === 0) {
     this.spawnCollectibles(1);
   }
-  if(this.currentFrame % 600 == 0) {
+  if(this.currentFrame % 600 === 0) {
     this.spawnCollectibles(2);
   }
   this.currentFrame++;
@@ -182,7 +182,7 @@ Enemy.prototype.update = function(dt) {
   //it gets auto-deleted
   //Params: dt = time difference between ticks
   this.x += 100*this.speed*dt;
-  if(this.y == player.y && (player.x - this.x) < 60 && (player.x - this.x) > -60) {
+  if(this.y === player.y && (player.x - this.x) < 60 && (player.x - this.x) > -60) {
     reset();
   }
   if(this.x > 600 || this.x < -200) {
@@ -224,7 +224,7 @@ Player.prototype.handleInput= function(direction) {
       break;
     case 'up':
       // move up
-      if(this.y==430) {
+      if(this.y === 430) {
         if(this.y - 45 >= 0) {
           this.y -= 45;
         }
@@ -236,7 +236,7 @@ Player.prototype.handleInput= function(direction) {
       break;
     case 'down':
       // move down
-      if(this.y==385) {
+      if(this.y === 385) {
         if(this.y + 45 <= 430) {
           this.y += 45;
         }
@@ -245,6 +245,8 @@ Player.prototype.handleInput= function(direction) {
           this.y += 85;
         }
       }
+      break;
+    default:
       break;
   }
 };
@@ -263,12 +265,12 @@ Collectible.prototype = Object.create(GameObject.prototype);
 Collectible.prototype.constructor = Collectible;
 
 Collectible.prototype.update = function(dt) {
-  if(this.y == player.y && this.x == player.x) {
-    if(this.id == 0) {
+  if(this.y === player.y && this.x === player.x) {
+    if(this.id === 0) {
       gameControl.increaseScore(1);
-    } else if(this.id==1) {
+    } else if(this.id === 1) {
       gameControl.increaseScore(3);
-    } else if(this.id==2) {
+    } else if(this.id === 2) {
       gameControl.increaseScore(5);
     }
     this.clear();
