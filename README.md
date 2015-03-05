@@ -1,6 +1,15 @@
-frontend-nanodegree-arcade-game
+Traffic Hell - Arcade game built for Udacity Front-End developer Nano Degree
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+The Directory structure:
+-css (directory to hold all stylesheets)
+-fonts (directory to hold all font resources)
+-images (directory to hold all image resources)
+-js (directory to hold all scripts)
+-index.html (main game file)
+-readme.md (readme)
 
-for self-checking their submission.
+The game can be started and played by simply opening 'index.html' in the main
+directory with a browser (eg. Google Chrome, Mozilla Firefox).
+
+index.html gets the necessary scripts from the 'js' directory to run the game.
