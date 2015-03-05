@@ -5,23 +5,23 @@ var GameObject = function() {
   this.x = 0;
   this.y = 0;
   this.sprite = 'images/default.png';
-}
+};
 
 // Prototypal methods
 GameObject.prototype.render = function() {
   // Renders the GameObject's sprite in the case
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 GameObject.prototype.update = function() {
   // Default fallback method. Does nothing right now.
-}
+};
 //==============================================================================
 // Base Class for Game Controls (frame-reading, enemy-spawning, collectible-spawning etc.)
 // Constructor
 var GameControl = function() {
   this.currentFrame = 0;
   this.currentScore = 0;
-}
+};
 
 GameControl.prototype.spawnEnemies = function(enemyId) {
   var spawnDistribution = Math.random();
@@ -54,9 +54,8 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
     }
     var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, 1);
   }
-
   allEnemies.push(enemy);
-}
+};
 GameControl.prototype.spawnCollectibles = function(collectibleId) {
   var spawnDistributionX = Math.random();
   var spawnDistributionY = Math.random();
@@ -136,10 +135,10 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 2);
     allCollectibles.push(collectible);
   }
-}
+};
 GameControl.prototype.increaseScore = function(increaseBy) {
   this.currentScore+=increaseBy;
-}
+};
 GameControl.prototype.update = function(dt) {
   if(this.currentFrame % 30 == 0) {
     this.spawnEnemies(1);
@@ -157,7 +156,7 @@ GameControl.prototype.update = function(dt) {
     this.spawnCollectibles(2);
   }
   this.currentFrame++;
-}
+};
 //==============================================================================
 // Enemy Class (is a subclass of GameObject)
 // Constructor
@@ -171,7 +170,7 @@ var Enemy = function(x, y, speed, sprite, id) {
   this.x = x;
   this.y = y;
   this.sprite = sprite;
-}
+};
 
 //Enemy extends/subclasses GameObject
 Enemy.prototype = Object.create(GameObject.prototype);
@@ -182,14 +181,14 @@ Enemy.prototype.update = function(dt) {
   //Updates the enemy position with time. If the enemy goes off-screen
   //it gets auto-deleted
   //Params: dt = time difference between ticks
-    this.x += 100*this.speed*dt;
-    if(this.y == player.y && (player.x - this.x) < 60 && (player.x - this.x) > -60) {
-      reset();
-    }
-    if(this.x > 600 || this.x < -200) {
-      allEnemies.splice(allEnemies.indexOf(this), 1);
-    }
-  };
+  this.x += 100*this.speed*dt;
+  if(this.y == player.y && (player.x - this.x) < 60 && (player.x - this.x) > -60) {
+    reset();
+  }
+  if(this.x > 600 || this.x < -200) {
+    allEnemies.splice(allEnemies.indexOf(this), 1);
+  }
+};
 //==============================================================================
 //Player Class (is a subclass of GameObject)
 //Constructor
@@ -247,8 +246,8 @@ Player.prototype.handleInput= function(direction) {
         }
       }
       break;
-    }
   }
+};
 //==============================================================================
 //
 var Collectible = function(x, y, sprite, id) {
@@ -258,7 +257,7 @@ var Collectible = function(x, y, sprite, id) {
   this.sprite = sprite;
   this.id = id;
   this.createdOnFrame = gameControl.currentFrame;
-}
+};
 
 Collectible.prototype = Object.create(GameObject.prototype);
 Collectible.prototype.constructor = Collectible;
@@ -277,17 +276,18 @@ Collectible.prototype.update = function(dt) {
   if(gameControl.currentFrame - this.createdOnFrame >= 120) {
     this.clear();
   }
-}
+};
 Collectible.prototype.clear = function() {
   allCollectibles.splice(allCollectibles.indexOf(this),1);
-}
+};
 //==============================================================================
 // Game logic
 var gameControl = new GameControl();
 
 // allEnemies stores all visible Enemy objects. Enemies that go off the screen
 // are removed from the array to save memory
-var allEnemies = [], allCollectibles = [];
+var allEnemies = [];
+var allCollectibles = [];
 
 // Sprites
 var enemyBugRightSprite = 'images/enemy-bug.png';
