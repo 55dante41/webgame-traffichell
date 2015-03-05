@@ -10,10 +10,13 @@ Arcade game built for Udacity Front-End developer ND
 - readme.md (readme)
 
 ###How to start the game:
-The game can be started and played by simply opening 'index.html' in the main
-directory with a browser (eg. Google Chrome, Mozilla Firefox).
-
-index.html gets the necessary scripts from the 'js' directory to run the game.
+- Download and install the latest version of python (https://www.python.org/downloads/)
+- Open cli and navigate to the game dir
+- Run the command: "python -m SimpleHTTPServer 8000" if you have python 2.x installed
+- Run the command: "python -m http.server 8000" if you have python 3.x installed
+- Go to http://localhost:8000 in your browser to start the game
+- Alternatively, the game can be started and played by simply opening 'index.html' in the main
+  directory with a browser (eg. Google Chrome, Mozilla Firefox).
 
 ###How to play the game:
 The main aim of the player is to survive in the traffic with highest possible
