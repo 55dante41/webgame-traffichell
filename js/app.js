@@ -25,25 +25,24 @@ var GameControl = function() {
 
 GameControl.prototype.spawnEnemies = function(enemyId) {
   var spawnDistribution = Math.random();
+  var enemyPositionX = -100;
+  var enemyPositionY = 385;
+  var enemySpeed = 3;
+  var enemySprite = 'images/enemy-bug.png';
   if(enemyId === 0) {
     //Enemy is a bug. Bug occupies only grass tiles
-    var enemyPositionX = -100;
-    var enemyPositionY = 385;
-    var enemySpeed = 3;
-    var enemySprite = 'images/enemy-bug.png';
     if(spawnDistribution < 0.5) {
       enemyPositionX = 500;
       enemyPositionY = 300;
       enemySpeed = -3;
       enemySprite = 'images/enemy-bug-left.png';
     }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, 0);
   } else if(enemyId === 1) {
     //Enemy is a blue car. Car occupies only stone tiles
-    var enemyPositionX = -100;
-    var enemyPositionY = 45;
-    var enemySpeed = 4;
-    var enemySprite = 'images/enemy-bluecar.svg';
+    enemyPositionX = -100;
+    enemyPositionY = 45;
+    enemySpeed = 4;
+    enemySprite = 'images/enemy-bluecar.svg';
     if(spawnDistribution < 0.33) {
       enemyPositionY = 215;
     } else if(spawnDistribution < 0.66) {
@@ -52,18 +51,18 @@ GameControl.prototype.spawnEnemies = function(enemyId) {
       enemySpeed = -4;
       enemySprite = 'images/enemy-bluecar-left.svg';
     }
-    var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, 1);
   }
+  var enemy = new Enemy(enemyPositionX, enemyPositionY, enemySpeed, enemySprite, enemyId);
   allEnemies.push(enemy);
 };
 GameControl.prototype.spawnCollectibles = function(collectibleId) {
   var spawnDistributionX = Math.random();
   var spawnDistributionY = Math.random();
+  var collectiblePositionX = 0;
+  var collectiblePositionY = 385;
+  var collectibleSprite = 'images/collectible-blueGem.png';
   if(collectibleId === 0) {
     // Blue Gem
-    var collectiblePositionX = 0;
-    var collectiblePositionY = 385;
-    var collectibleSprite = 'images/collectible-blueGem.png';
     if(spawnDistributionX < 0.2) {
       collectiblePositionX = 100;
     } else if(spawnDistributionX < 0.4) {
@@ -82,13 +81,9 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     } else if(spawnDistributionY < 0.8) {
       collectiblePositionY = 45;
     }
-    var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 0);
-    allCollectibles.push(collectible);
   } else if(collectibleId === 1) {
     // Green Gem
-    var collectiblePositionX = 0;
-    var collectiblePositionY = 385;
-    var collectibleSprite = 'images/collectible-greenGem.png';
+    collectibleSprite = 'images/collectible-greenGem.png';
     if(spawnDistributionX < 0.2) {
       collectiblePositionX = 400;
     } else if(spawnDistributionX < 0.4) {
@@ -107,13 +102,9 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     } else if(spawnDistributionY < 0.8) {
       collectiblePositionY = 45;
     }
-    var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 1);
-    allCollectibles.push(collectible);
   } else if(collectibleId === 2) {
     // Orange Gem
-    var collectiblePositionX = 0;
-    var collectiblePositionY = 385;
-    var collectibleSprite = 'images/collectible-orangeGem.png';
+    collectibleSprite = 'images/collectible-orangeGem.png';
     if(spawnDistributionX < 0.2) {
       collectiblePositionX = 400;
     } else if(spawnDistributionX < 0.4) {
@@ -132,12 +123,12 @@ GameControl.prototype.spawnCollectibles = function(collectibleId) {
     } else if(spawnDistributionY < 0.8) {
       collectiblePositionY = 300;
     }
-    var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, 2);
-    allCollectibles.push(collectible);
   }
+  var collectible = new Collectible(collectiblePositionX, collectiblePositionY, collectibleSprite, collectibleId);
+  allCollectibles.push(collectible);
 };
 GameControl.prototype.increaseScore = function(increaseBy) {
-  this.currentScore+=increaseBy;
+  this.currentScore += increaseBy;
 };
 GameControl.prototype.update = function(dt) {
   if(this.currentFrame % 30 === 0) {
@@ -155,7 +146,7 @@ GameControl.prototype.update = function(dt) {
   if(this.currentFrame % 600 === 0) {
     this.spawnCollectibles(2);
   }
-  this.currentFrame++;
+  this.currentFrame += 1;
 };
 //==============================================================================
 // Enemy Class (is a subclass of GameObject)
